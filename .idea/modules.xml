@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MobileAuthenticationAndroid.iml" filepath="$PROJECT_DIR$/MobileAuthenticationAndroid.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://C:\Users\Aidan Laing\Documents\Repos\MobileAuthenticationAndroid\app\app.iml" filepath="C:\Users\Aidan Laing\Documents\Repos\MobileAuthenticationAndroid\app\app.iml" />
       <module fileurl="file://$PROJECT_DIR$/mobileauthentication/mobileauthentication.iml" filepath="$PROJECT_DIR$/mobileauthentication/mobileauthentication.iml" />
     </modules>
   </component>
