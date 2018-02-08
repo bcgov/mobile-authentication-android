@@ -59,8 +59,33 @@ val client = MobileAuthenticationClient(context, baseUrl, realmName, authEndpoin
 ```
 The parameters needed for the client can all be found on your Red Hat Single Sign-On dashboard.
 We recommened you use a custom application schema for your redirectUri such as <NAME_OF_YOUR_APP>://android
+Please use the context of the activity in which you are going to call authenticate to create the client.
 
 Please remember to call `client.clear()` in either `onPause()`, `onStop()` or `onDestroy()` in order to avoid memory leaks.
+
+### Authenticate
+Authenticate will get a fresh token from Red Hat Single Sign-On after the user has entered their login credentials through a Chrome custom tab and store it locally.
+The result of the authenticate call can be retrieved in the `onActivityResult()` where the client was created.
+
+Calling authenticate:
+```kotlin
+client.authenticate(<OPTIONAL_REQUEST_CODE>)
+```
+
+OnActivityResult:
+```kotlin
+override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+	super.onActivityResult(requestCode, resultCode, data)
+	client?.handleAuthResult(requestCode, resultCode, data, object: MobileAuthenticationClient.TokenCallback {
+		override fun onError(throwable: Throwable) {
+			Log.e(tag, throwable.message)
+		}
+		override fun onSuccess(token: Token) {
+			Log.d(tag, "Authenticate Success")
+		}
+	})
+}
+```
 
 
 
