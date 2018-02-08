@@ -148,4 +148,17 @@ client?.refreshToken(object: MobileAuthenticationClient.TokenCallback {
 })
 ```
 
+### Delete Token
+Delete token will delete the locally stored token.
 
+Calling deleteToken:
+```kotlin
+client?.deleteToken(object: MobileAuthenticationClient.DeleteCallback {
+    override fun onError(throwable: Throwable) {
+        Log.e(tag, throwable.message)
+    }
+    override fun onSuccess() {
+        Log.d(tag, "Delete Token Success")
+    }
+})
+```
