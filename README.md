@@ -69,7 +69,7 @@ The result of the authenticate call can be retrieved in the `onActivityResult()`
 
 Calling authenticate:
 ```kotlin
-client.authenticate(<OPTIONAL_REQUEST_CODE>)
+client?.authenticate(<OPTIONAL_REQUEST_CODE>)
 ```
 
 OnActivityResult:
@@ -86,6 +86,39 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) 
 	})
 }
 ```
+
+### Get Token
+Get token will get the token from local storage.
+If the token is expired and the refresh token is NOT expired the token will automatically be refreshed, saved locally and returned.
+
+Exceptions:
+1. If there is no token locally a `TokenNotFoundException` will be thrown in the onError of the TokenCallback. This means the user has not yet been authenticated so no token exists locally.
+2. If the token's refresh token is expired a `RefreshExpiredException` will be thrown in the onError of the TokenCallback. In this case the user will need to reauthenticate.
+3. If the token does not have a refresh token then a `NoRefreshTokenException` will be thrown in the onError of the TokenCallback. This means the Token data being returned does not contain the required refreshToken for this lib to work.
+
+Calling getToken:
+```kotlin
+client?.getToken(object: MobileAuthenticationClient.TokenCallback {
+	override fun onError(throwable: Throwable) {
+		when (throwable) {
+			is RefreshExpiredException -> {
+				Log.e(tag, "Refresh token is expired. Please re-authenticate.")
+			}
+			is NoRefreshTokenException -> {
+				Log.e(tag, "No Refresh token associated with Token")
+			}
+			is TokenNotFoundException -> {
+				Log.e(tag, "No Token was found. Please authenticate first.")
+			}
+		}
+	}
+
+	override fun onSuccess(token: Token) {
+		Log.d(tag, "Get Token Success")
+	}
+})
+```
+
 
 
 
