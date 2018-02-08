@@ -76,7 +76,6 @@ class MainActivity : AppCompatActivity() {
     private fun refreshToken() {
         client?.refreshToken(object: MobileAuthenticationClient.TokenCallback {
             override fun onError(throwable: Throwable) {
-                Log.e(tag, throwable.message)
                 when (throwable) {
                     is RefreshExpiredException -> {
                         Log.e(tag, "Refresh token is expired. Please re-authenticate.")
