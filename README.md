@@ -162,3 +162,7 @@ client?.deleteToken(object: MobileAuthenticationClient.DeleteCallback {
     }
 })
 ```
+
+### RxJava2
+If you are using RxJava2 you can use `getTokenAsObservable()`, `refreshTokenAsObservable()` and `deleteTokenAsObservable()` in replace of the TokenCallback and DeleteCallback.
+Note that TokenNotFoundException in getToken will be replaced with NoSuchElementException when using getTokenAsObservable.
