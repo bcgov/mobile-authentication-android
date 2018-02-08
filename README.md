@@ -51,8 +51,7 @@ Please remember to call `client.clear()` in either `onPause()`, `onStop()` or `o
 ### Android Manifest
 You will need to add this to your AndroidManifest and specify what custom schema you're using in your redirectUri.
 ```xml
-<activity
-	android:name="ca.bc.gov.mobileauthentication.screens.redirect.RedirectActivity"
+<activity android:name="ca.bc.gov.mobileauthentication.screens.redirect.RedirectActivity"
 	android:launchMode="singleInstance">
 	<intent-filter android:autoVerify="true">
 		<action android:name="android.intent.action.VIEW" />
