@@ -43,15 +43,15 @@ val clientId = "<YOUR_CLIENT_ID>"
 val realmName = "<YOUR_REALM_NAME>"
 val redirectUri = "<YOUR_REDIRECT_URI>"
 
-client = MobileAuthenticationClient(context, baseUrl, realmName, authEndpoint, redirectUri, clientId)
+val client = MobileAuthenticationClient(context, baseUrl, realmName, authEndpoint, redirectUri, clientId)
 ```
 
 Please remember to call `client.clear()` in either `onPause()`, `onStop()` or `onDestroy()` in order to avoid memory leaks.
 
 ### Android Manifest
 You will need to add this to your AndroidManifest and specify what custom schema you're using in your redirectUri.
-```
-<activity xml
+```xml
+<activity
 	android:name="ca.bc.gov.mobileauthentication.screens.redirect.RedirectActivity"
 	android:launchMode="singleInstance">
 	<intent-filter android:autoVerify="true">
