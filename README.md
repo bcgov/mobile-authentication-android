@@ -89,6 +89,7 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) 
 
 ### Get Token
 Get token will get the token from local storage.
+
 If the token is expired and the refresh token is NOT expired the token will automatically be refreshed, saved locally and returned.
 
 Exceptions:
@@ -119,7 +120,11 @@ client?.getToken(object: MobileAuthenticationClient.TokenCallback {
 })
 ```
 
+### Refresh Token
+Refresh token will refresh the locally stored token.
 
-
+Exceptions:
+1. If the token's refresh token is expired a `RefreshExpiredException` will be thrown in the onError of the TokenCallback. In this case the user will need to reauthenticate.
+2. If the token does not have a refresh token then a `NoRefreshTokenException` will be thrown in the onError of the TokenCallback. This means the Token data being returned does not contain the required refreshToken for this lib to work.
 
 

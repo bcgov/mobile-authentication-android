@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onSuccess(token: Token) {
-                Log.d(tag, "Get Success")
+                Log.d(tag, "Get Token Success")
                 refreshToken()
             }
         })
@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onSuccess(token: Token) {
-                Log.d(tag, "Refresh Success")
+                Log.d(tag, "Refresh Token Success")
                 deleteToken()
             }
         })
@@ -101,7 +101,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onSuccess() {
-                Log.d(tag, "Delete Success")
+                Log.d(tag, "Delete Token Success")
             }
         })
     }
