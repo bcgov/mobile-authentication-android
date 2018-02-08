@@ -127,4 +127,26 @@ Exceptions:
 1. If the token's refresh token is expired a `RefreshExpiredException` will be thrown in the onError of the TokenCallback. In this case the user will need to reauthenticate.
 2. If the token does not have a refresh token then a `NoRefreshTokenException` will be thrown in the onError of the TokenCallback. This means the Token data being returned does not contain the required refreshToken for this lib to work.
 
+Calling refreshToken:
+```kotlin
+client?.refreshToken(object: MobileAuthenticationClient.TokenCallback {
+	override fun onError(throwable: Throwable) {
+		Log.e(tag, throwable.message)
+		when (throwable) {
+			is RefreshExpiredException -> {
+				Log.e(tag, "Refresh token is expired. Please re-authenticate.")
+			}
+			is NoRefreshTokenException -> {
+				Log.e(tag, "No Refresh token associated with Token")
+			}
+		}
+	}
+
+	override fun onSuccess(token: Token) {
+		Log.d(tag, "Refresh Token Success")
+		deleteToken()
+	}
+})
+```
+
 
