@@ -21,12 +21,12 @@ data class Token(
 
     fun isExpired(currentTime: Long = System.currentTimeMillis()): Boolean {
         val currExpiresAt = expiresAt ?: return true
-        return currExpiresAt > currentTime
+        return currExpiresAt < currentTime
     }
 
     fun isRefreshExpired(currentTime: Long = System.currentTimeMillis()): Boolean {
         val currRefreshExpiresAt = refreshExpiresAt ?: return true
-        return currRefreshExpiresAt > currentTime
+        return currRefreshExpiresAt < currentTime
     }
 
 }

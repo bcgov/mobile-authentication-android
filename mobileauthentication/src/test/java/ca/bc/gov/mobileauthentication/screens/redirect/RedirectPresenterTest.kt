@@ -100,7 +100,7 @@ class RedirectPresenterTest {
     fun redirectReceived() {
         val code = "123"
         val token = Token("opensesame",null,null,null,
-                null,null,null,null)
+                null,null,null,null, 3000L, 4000L)
         whenever(tokenRepo.getToken(code)).thenReturn(Observable.just(token))
 
         val tokenJson = "{ \"accessToken\" : \"opensesame\"}"
@@ -128,7 +128,7 @@ class RedirectPresenterTest {
     fun getToken() {
         val code = "123"
         val token = Token("opensesame",null,null,null,
-                null,null,null,null)
+                null,null,null,null, 3000L, 4000L)
         whenever(tokenRepo.getToken(code)).thenReturn(Observable.just(token))
 
         val tokenJson = "{ \"accessToken\" : \"opensesame\"}"
