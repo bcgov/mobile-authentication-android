@@ -43,6 +43,11 @@ private constructor(
     override fun getToken(code: String?): Observable<Token> {
         if (code == null) return Observable.error(NoCodeException())
         return authApi.getToken(realmName, grantType, redirectUri, clientId, code)
+                .map { token ->
+                    token.expiresAt = System.currentTimeMillis() + ((token.expiresIn ?: 0) * 1000)
+                    token.refreshExpiresAt = System.currentTimeMillis() + ((token.refreshExpiresIn ?: 0) * 1000)
+                    token
+                }
     }
 
     /**
@@ -59,6 +64,11 @@ private constructor(
     override fun refreshToken(token: Token): Observable<Token> {
         val refreshToken = token.refreshToken ?: return Observable.error(NoRefreshTokenException())
         return authApi.refreshToken(realmName, redirectUri, clientId, refreshToken)
+                .map { refreshedToken ->
+                    refreshedToken.expiresAt = System.currentTimeMillis() + ((refreshedToken.expiresIn ?: 0) * 1000)
+                    refreshedToken.refreshExpiresAt = System.currentTimeMillis() + ((refreshedToken.refreshExpiresIn ?: 0) * 1000)
+                    refreshedToken
+                }
     }
     /**
      * Invalid operation for remote data source
