@@ -15,8 +15,8 @@ data class Token(
         @SerializedName("id_token") val idToken: String?,
         @SerializedName("not-before-policy") val notBeforePolicy: Long?,
         @SerializedName("session_state") val sessionState: String?,
-        val expiresAt: Long = System.currentTimeMillis() + (expiresIn ?: 0 * 1000),
-        val refreshExpiresAt: Long = System.currentTimeMillis() + (refreshExpiresIn ?: 0 * 1000)
+        @SerializedName("expires_at") val expiresAt: Long = System.currentTimeMillis() + ((expiresIn ?: 0) * 1000),
+        @SerializedName("refresh_expires_at") val refreshExpiresAt: Long = System.currentTimeMillis() + ((refreshExpiresIn ?: 0) * 1000)
 ) {
 
     fun isExpired(currentTime: Long = System.currentTimeMillis()): Boolean = expiresAt > currentTime
