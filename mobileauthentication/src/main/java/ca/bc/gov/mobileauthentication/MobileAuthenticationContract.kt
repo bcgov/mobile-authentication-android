@@ -28,6 +28,7 @@ interface MobileAuthenticationContract {
     val authEndpoint: String
     val redirectUri: String
     val clientId: String
+    val hint: String
 
     fun authenticate(requestCode: Int = MobileAuthenticationClient.DEFAULT_REQUEST_CODE)
 

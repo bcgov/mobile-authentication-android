@@ -47,6 +47,7 @@ class RedirectActivity : AppCompatActivity(), RedirectContract.View {
         const val AUTH_ENDPOINT = "AUTH_ENDPOINT"
         const val REDIRECT_URI = "REDIRECT_URI"
         const val CLIENT_ID = "CLIENT_ID"
+        const val HINT = "HINT"
     }
 
     // Life cycle
@@ -59,6 +60,7 @@ class RedirectActivity : AppCompatActivity(), RedirectContract.View {
         val authEndpoint: String? = intent.getStringExtra(AUTH_ENDPOINT)
         val redirectUri: String? = intent.getStringExtra(REDIRECT_URI)
         val clientId: String? = intent.getStringExtra(CLIENT_ID)
+        val hint: String? = intent.getStringExtra(HINT)
 
         // Checking for required params
         if (baseUrl == null) {
@@ -86,6 +88,11 @@ class RedirectActivity : AppCompatActivity(), RedirectContract.View {
             return
         }
 
+        if (hint == null) {
+            showToastAndFinish(getString(R.string.error_missing_hint))
+            return
+        }
+
         // Building presenter params
         val grantType = Constants.GRANT_TYPE_AUTH_CODE
         val responseType = Constants.RESPONSE_TYPE_CODE
@@ -98,7 +105,7 @@ class RedirectActivity : AppCompatActivity(), RedirectContract.View {
         val gson = Injection.provideGson()
 
         RedirectPresenter(
-                this, authEndpoint, redirectUri, clientId, responseType, tokenRepo, gson)
+                this, authEndpoint, redirectUri, clientId, responseType, hint, tokenRepo, gson)
 
         presenter?.subscribe()
     }

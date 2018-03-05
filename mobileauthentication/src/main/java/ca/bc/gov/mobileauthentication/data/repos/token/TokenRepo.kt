@@ -59,11 +59,11 @@ private constructor(
         } else {
             localDataSource.getToken()
                     .flatMap {
-                        when {
-                            it.isRefreshExpired() -> Observable.error(RefreshExpiredException())
-                            it.isExpired() -> refreshToken(it)
-                            else -> Observable.just(it)
-                        }
+                            when {
+                                it.isRefreshExpired() -> Observable.error(RefreshExpiredException())
+                                it.isExpired() -> refreshToken(it)
+                                else -> Observable.just(it)
+                            }
                     }
         }
     }

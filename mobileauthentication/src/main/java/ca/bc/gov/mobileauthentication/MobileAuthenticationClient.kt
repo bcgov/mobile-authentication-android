@@ -44,7 +44,9 @@ class MobileAuthenticationClient(
         override val realmName: String,
         override val authEndpoint: String,
         override val redirectUri: String,
-        override val clientId: String) : MobileAuthenticationContract {
+        override val clientId: String,
+        override val hint: String = ""
+) : MobileAuthenticationContract {
 
     private val disposables = CompositeDisposable()
 
@@ -68,6 +70,7 @@ class MobileAuthenticationClient(
                 .putExtra(RedirectActivity.AUTH_ENDPOINT, authEndpoint)
                 .putExtra(RedirectActivity.REDIRECT_URI, redirectUri)
                 .putExtra(RedirectActivity.CLIENT_ID, clientId)
+                .putExtra(RedirectActivity.HINT, hint)
                 .run { (context as Activity).startActivityForResult(this, requestCode) }
     }
 

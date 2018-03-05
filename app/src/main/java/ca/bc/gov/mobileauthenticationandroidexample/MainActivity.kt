@@ -41,10 +41,11 @@ class MainActivity : AppCompatActivity() {
         val baseUrl = "https://dev-sso.pathfinder.gov.bc.ca/"
         val clientId = "secure-image"
         val realmName = "mobile"
-        val redirectUri = "bcgov://android"
+        val redirectUri = "secure-image://"
+        val hint = "idir"
 
         client = MobileAuthenticationClient(this, baseUrl, realmName,
-                authEndpoint, redirectUri, clientId)
+                authEndpoint, redirectUri, clientId, hint)
 
         client?.authenticate()
     }

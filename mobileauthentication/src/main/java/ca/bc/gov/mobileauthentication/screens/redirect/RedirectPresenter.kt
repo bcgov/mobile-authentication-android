@@ -32,6 +32,7 @@ class RedirectPresenter(
         private val redirectUri: String,
         private val clientId: String,
         private val responseType: String,
+        private val hint: String,
         private val tokenRepo: TokenRepo,
         private val gson: Gson
 ): RedirectContract.Presenter {
@@ -57,7 +58,7 @@ class RedirectPresenter(
 
     // Auth url
     fun buildAuthUrl(): String =
-            "$authEndpoint?response_type=$responseType&client_id=$clientId&redirect_uri=$redirectUri"
+            "$authEndpoint?response_type=$responseType&client_id=$clientId&redirect_uri=$redirectUri&kc_idp_hint=$hint"
 
     // Redirect
     override fun redirectReceived(redirectUrl: String) {

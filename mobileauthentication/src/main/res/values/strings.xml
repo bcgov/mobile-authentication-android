@@ -4,6 +4,7 @@
     <string name="error_missing_auth_endpoint">Missing auth endpoint intent parameter</string>
     <string name="error_missing_redirect_uri">Missing redirect uri intent parameter</string>
     <string name="error_missing_client_id">Missing client id intent parameter</string>
+    <string name="error_missing_hint">Missing hint intent parameter</string>
     <string name="login">Login</string>
     <string name="logging_in">Logging In</string>
 </resources>

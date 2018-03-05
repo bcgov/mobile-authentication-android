@@ -54,10 +54,13 @@ val baseUrl = "<YOUR_BASE_URL>"
 val clientId = "<YOUR_CLIENT_ID>"
 val realmName = "<YOUR_REALM_NAME>"
 val redirectUri = "<YOUR_REDIRECT_URI>"
+val hint = "idir"
 
-val client = MobileAuthenticationClient(context, baseUrl, realmName, authEndpoint, redirectUri, clientId)
+val client = MobileAuthenticationClient(context, baseUrl, realmName, authEndpoint, redirectUri, clientId, hint)
 ```
 The parameters needed for the client can all be found on your Red Hat Single Sign-On dashboard.
+
+The hint param is optional and can be used to directly send the user to the specified login.
 
 We recommened you use a custom application schema for your redirectUri such as <NAME_OF_YOUR_APP>://android
 
