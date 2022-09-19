@@ -13,8 +13,6 @@ android {
         targetSdkVersion 26
         compileSdkVersion 26
         buildToolsVersion '26.0.2'
-        versionCode 1
-        versionName "1.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -31,6 +29,7 @@ android {
             }
         }
     }
+    namespace 'ca.bc.gov.mobileauthentication'
 
 }
 
