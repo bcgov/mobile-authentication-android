@@ -5,11 +5,12 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 26
+
     defaultConfig {
+        compileSdkVersion rootProject.ext.compileSdkVersion
         applicationId "ca.bc.gov.mobileauthenticationandroidexample"
-        minSdkVersion 23
-        targetSdkVersion 26
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
