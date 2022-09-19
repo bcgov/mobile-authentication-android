@@ -16,7 +16,7 @@ android {
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
         manifestPlaceholders = [
-                'appAuthRedirectScheme': 'secure-image'
+                'appAuthRedirectScheme': 'secure-image://client'
         ]
     }
     buildTypes {
