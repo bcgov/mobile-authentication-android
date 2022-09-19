@@ -8,9 +8,9 @@ import android.preference.PreferenceManager
 import android.widget.Toast
 import ca.bc.gov.mobileauthentication.R
 import ca.bc.gov.mobileauthentication.di.InjectionUtils
-import android.support.customtabs.CustomTabsIntent
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import ca.bc.gov.mobileauthentication.MobileAuthenticationClient
 import ca.bc.gov.mobileauthentication.common.Constants
