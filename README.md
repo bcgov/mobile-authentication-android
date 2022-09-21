@@ -6,7 +6,7 @@ MobileAuthentication supports Android API 23 and above so AES encryption can be 
 
 ## Getting Started
 project build.gradle:
-```
+```groovy
 allprojects {
 	repositories {
 		...
@@ -16,7 +16,7 @@ allprojects {
 ```
 	
 app build.gradle:
-```
+```groovy
 dependencies {
 	implementation "com.github.bcgov:mobile-authentication-android:<LATEST_VERSION>"
 }
@@ -25,19 +25,33 @@ dependencies {
 ### Prerequisites
 A Red Hat Single Sign-On server component that is setup to handle an OAuth2 authorization code flow.
 
-### Android Manifest
-You will need to add this to your AndroidManifest and specify what custom schema you're using in your redirectUri.
-```xml
-<activity android:name="ca.bc.gov.mobileauthentication.screens.redirect.RedirectActivity"
-	android:launchMode="singleInstance">
-	<intent-filter android:autoVerify="true">
-		<action android:name="android.intent.action.VIEW" />
-		<category android:name="android.intent.category.DEFAULT" />
-		<category android:name="android.intent.category.BROWSABLE" />
-		<data android:scheme="<YOUR_CUSTOM_SCHEME_USED_IN_REDIRECT_URI>" />
-	</intent-filter>
-</activity>
+### Handling Custom Scheme Redirects
+
+Specify the redirect value by setting the manifest placeholder value `appAuthRedirectScheme` in your project's build.gradle file:
+
+```groovy
+android {
+    defaultConfig {
+        ...
+
+        manifestPlaceholders = [
+                'appAuthRedirectScheme': '<YOUR_CUSTOM_SCHEME_USED_IN_REDIRECT_URI>'
+        ]
+
+        ...
+    }
+}
 ```
+
+Only the scheme is required:
+
+> 'appAuthRedirectScheme': 'custom-scheme' <- happiness
+
+Adding any more isn't valid:
+
+> 'appAuthRedirectScheme': 'custom-scheme://somePath'  <- runtime issues
+
+***Note:*** you were previously required to add RedirectActivity with an intent filter to your application's manifest. This is no longer required because the functionality is handled by this manifest placeholder value.
 
 ## Usage
 There are four main commands for handling tokens that will be called using the MobileAuthenticationClient class.
