@@ -18,6 +18,6 @@ package ca.bc.gov.mobileauthentication.common.exceptions
  *
  */
 class NoRefreshTokenException : Throwable() {
-    override val message: String?
+    override val message: String
         get() = "No refresh token"
 }

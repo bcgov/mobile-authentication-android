@@ -18,6 +18,6 @@ package ca.bc.gov.mobileauthentication.common.exceptions
  *
  */
 class NoCodeException : Throwable() {
-    override val message: String?
+    override val message: String
         get() = "Code is required for getting token"
 }

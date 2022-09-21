@@ -4,18 +4,18 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.view.View
 import android.widget.Toast
-import ca.bc.gov.mobileauthentication.R
-import ca.bc.gov.mobileauthentication.di.InjectionUtils
+import androidx.appcompat.app.AppCompatActivity
+import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AppCompatActivity
-import android.view.View
-import androidx.browser.customtabs.CustomTabColorSchemeParams
 import ca.bc.gov.mobileauthentication.MobileAuthenticationClient
+import ca.bc.gov.mobileauthentication.R
 import ca.bc.gov.mobileauthentication.common.Constants
 import ca.bc.gov.mobileauthentication.data.AppAuthApi
 import ca.bc.gov.mobileauthentication.di.Injection
+import ca.bc.gov.mobileauthentication.di.InjectionUtils
 import kotlinx.android.synthetic.main.activity_login.*
 
 /**
@@ -96,13 +96,11 @@ class RedirectActivity : AppCompatActivity(), RedirectContract.View {
         }
 
         // Building presenter params
-        val grantType = Constants.GRANT_TYPE_AUTH_CODE
         val responseType = Constants.RESPONSE_TYPE_CODE
 
         appauthApi = AppAuthApi(this, baseUrl, realmName, authEndpoint, redirectUri, clientId, hint)
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
-        val tokenRepo = InjectionUtils.getTokenRepo(
-                appauthApi, realmName, grantType, redirectUri, clientId, sharedPreferences)
+        val tokenRepo = InjectionUtils.getTokenRepo(appauthApi, sharedPreferences)
 
         val gson = Injection.provideGson()
 

@@ -26,27 +26,15 @@ import net.openid.appauth.AuthorizationResponse
  *
  */
 class TokenRemoteDataSource
-private constructor(
-        private val authApi: AppAuthApi,
-        private val realmName: String,
-        private val grantType: String,
-        private val redirectUri: String,
-        private val clientId: String
-) : TokenDataSource {
+private constructor(private val authApi: AppAuthApi) : TokenDataSource {
 
     companion object {
 
         @Volatile
         private var INSTANCE: TokenRemoteDataSource? = null
 
-        fun getInstance(
-                authApi: AppAuthApi,
-                realmName: String,
-                grantType: String,
-                redirectUri: String,
-                clientId: String): TokenRemoteDataSource = INSTANCE ?: synchronized(this) {
-            INSTANCE ?: TokenRemoteDataSource(
-                    authApi, realmName, grantType, redirectUri, clientId).also { INSTANCE = it }
+        fun getInstance(authApi: AppAuthApi): TokenRemoteDataSource = INSTANCE ?: synchronized(this) {
+            INSTANCE ?: TokenRemoteDataSource(authApi).also { INSTANCE = it }
         }
     }
 

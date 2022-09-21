@@ -154,7 +154,7 @@ class SecureSharedPrefs(
     }
 
     companion object {
-        private val AES_TRANSFORMATION = "AES/GCM/NoPadding"
+        private const val AES_TRANSFORMATION = "AES/GCM/NoPadding"
     }
 
 }

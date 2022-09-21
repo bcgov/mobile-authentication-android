@@ -19,6 +19,6 @@ package ca.bc.gov.mobileauthentication.common.exceptions
  */
 class InvalidOperationException: Throwable() {
 
-    override val message: String? get() = "Invalid operation"
+    override val message: String get() = "Invalid operation"
 
 }

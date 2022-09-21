@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.preference.PreferenceManager
-import ca.bc.gov.mobileauthentication.common.Constants
 import ca.bc.gov.mobileauthentication.common.exceptions.TokenNotFoundException
 import ca.bc.gov.mobileauthentication.data.AppAuthApi
 import ca.bc.gov.mobileauthentication.data.models.Token
@@ -50,11 +49,9 @@ class MobileAuthenticationClient(
     private val disposables = CompositeDisposable()
 
     private val gson: Gson = Injection.provideGson()
-    private val grantType: String = Constants.GRANT_TYPE_AUTH_CODE
     private val appauthApi: AppAuthApi = AppAuthApi(context, baseUrl, realmName, authEndpoint, redirectUri, clientId, hint)
     private val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context.applicationContext)
-    private val tokenRepo: TokenRepo = InjectionUtils.getTokenRepo(
-            appauthApi, realmName, grantType, redirectUri, clientId, sharedPrefs)
+    private val tokenRepo: TokenRepo = InjectionUtils.getTokenRepo(appauthApi, sharedPrefs)
 
     private var passedRequestCode: Int = DEFAULT_REQUEST_CODE
 

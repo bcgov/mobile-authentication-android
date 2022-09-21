@@ -18,6 +18,6 @@ package ca.bc.gov.mobileauthentication.common.exceptions
  *
  */
 class RefreshExpiredException : Throwable() {
-    override val message: String?
+    override val message: String
         get() = "Refresh token has expired. Please get new token using authenticate."
 }

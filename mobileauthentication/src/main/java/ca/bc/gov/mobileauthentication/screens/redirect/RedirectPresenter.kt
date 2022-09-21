@@ -1,7 +1,6 @@
 package ca.bc.gov.mobileauthentication.screens.redirect
 
 import android.content.Intent
-import ca.bc.gov.mobileauthentication.common.utils.UrlUtils
 import ca.bc.gov.mobileauthentication.data.repos.token.TokenRepo
 import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers

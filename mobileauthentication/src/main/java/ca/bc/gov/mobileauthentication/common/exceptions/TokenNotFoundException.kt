@@ -18,6 +18,6 @@ package ca.bc.gov.mobileauthentication.common.exceptions
  *
  */
 class TokenNotFoundException : Throwable() {
-    override val message: String?
+    override val message: String
         get() = "No token found. Please call authenticate before trying to retrieve a token locally."
 }

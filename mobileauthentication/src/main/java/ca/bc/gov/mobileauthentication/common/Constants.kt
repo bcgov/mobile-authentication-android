@@ -18,9 +18,6 @@ package ca.bc.gov.mobileauthentication.common
  *
  */
 object Constants {
-    const val READ_TIME_OUT = 20L
-    const val CONNECT_TIME_OUT = 20L
 
-    const val GRANT_TYPE_AUTH_CODE = "authorization_code"
     const val RESPONSE_TYPE_CODE = "code"
 }

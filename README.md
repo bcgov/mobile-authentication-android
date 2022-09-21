@@ -62,7 +62,7 @@ The parameters needed for the client can all be found on your Red Hat Single Sig
 
 The hint param is optional and can be used to directly send the user to the specified login.
 
-We recommened you use a custom application schema for your redirectUri such as <NAME_OF_YOUR_APP>://android
+We recommend you use a custom application schema for your redirectUri such as <NAME_OF_YOUR_APP>://android
 
 Please use the context of the activity in which you are going to call authenticate to create the client.
 
@@ -100,7 +100,7 @@ If the token is expired and the refresh token is NOT expired the token will auto
 
 Exceptions:
 1. If there is no token locally a `TokenNotFoundException` will be thrown in the onError of the TokenCallback. This means the user has not yet been authenticated so no token exists locally.
-2. If the token's refresh token is expired a `RefreshExpiredException` will be thrown in the onError of the TokenCallback. In this case the user will need to reauthenticate.
+2. If the token's refresh token is expired a `RefreshExpiredException` will be thrown in the onError of the TokenCallback. In this case the user will need to re-authenticate.
 3. If the token does not have a refresh token then a `NoRefreshTokenException` will be thrown in the onError of the TokenCallback. This means the Token data being returned does not contain the required refreshToken for this lib to work.
 
 Calling getToken:
@@ -130,7 +130,7 @@ client?.getToken(object: MobileAuthenticationClient.TokenCallback {
 Refresh token will refresh the locally stored token.
 
 Exceptions:
-1. If the token's refresh token is expired a `RefreshExpiredException` will be thrown in the onError of the TokenCallback. In this case the user will need to reauthenticate.
+1. If the token's refresh token is expired a `RefreshExpiredException` will be thrown in the onError of the TokenCallback. In this case the user will need to re-authenticate.
 2. If the token does not have a refresh token then a `NoRefreshTokenException` will be thrown in the onError of the TokenCallback. This means the Token data being returned does not contain the required refreshToken for this lib to work.
 
 Calling refreshToken:
