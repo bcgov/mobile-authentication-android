@@ -3,9 +3,10 @@ package ca.bc.gov.mobileauthentication.data.repos.token
 import ca.bc.gov.mobileauthentication.common.exceptions.InvalidOperationException
 import ca.bc.gov.mobileauthentication.common.exceptions.NoCodeException
 import ca.bc.gov.mobileauthentication.common.exceptions.NoRefreshTokenException
-import ca.bc.gov.mobileauthentication.data.AuthApi
+import ca.bc.gov.mobileauthentication.data.AppAuthApi
 import ca.bc.gov.mobileauthentication.data.models.Token
 import io.reactivex.Observable
+import net.openid.appauth.AuthorizationResponse
 
 /**
  *
@@ -26,7 +27,7 @@ import io.reactivex.Observable
  */
 class TokenRemoteDataSource
 private constructor(
-        private val authApi: AuthApi,
+        private val authApi: AppAuthApi,
         private val realmName: String,
         private val grantType: String,
         private val redirectUri: String,
@@ -39,7 +40,7 @@ private constructor(
         private var INSTANCE: TokenRemoteDataSource? = null
 
         fun getInstance(
-                authApi: AuthApi,
+                authApi: AppAuthApi,
                 realmName: String,
                 grantType: String,
                 redirectUri: String,
@@ -53,14 +54,11 @@ private constructor(
      * Exchanges code for token using authentication api
      * Returns error if code is null
      */
-    override fun getToken(code: String?): Observable<Token> {
-        if (code == null) return Observable.error(NoCodeException())
-        return authApi.getToken(realmName, grantType, redirectUri, clientId, code)
-                .map { token ->
-                    token.expiresAt = System.currentTimeMillis() + ((token.expiresIn ?: 0) * 1000)
-                    token.refreshExpiresAt = System.currentTimeMillis() + ((token.refreshExpiresIn ?: 0) * 1000)
-                    token
-                }
+    override fun getToken(authResponse: AuthorizationResponse?): Observable<Token> {
+        if (authResponse == null)
+            return Observable.error(NoCodeException())
+
+        return authApi.getToken(authResponse)
     }
 
     /**
@@ -75,13 +73,10 @@ private constructor(
      * Returns error if there is no refresh token
      */
     override fun refreshToken(token: Token): Observable<Token> {
-        val refreshToken = token.refreshToken ?: return Observable.error(NoRefreshTokenException())
-        return authApi.refreshToken(realmName, redirectUri, clientId, refreshToken)
-                .map { refreshedToken ->
-                    refreshedToken.expiresAt = System.currentTimeMillis() + ((refreshedToken.expiresIn ?: 0) * 1000)
-                    refreshedToken.refreshExpiresAt = System.currentTimeMillis() + ((refreshedToken.refreshExpiresIn ?: 0) * 1000)
-                    refreshedToken
-                }
+        if (token.refreshToken == null)
+            return Observable.error(NoRefreshTokenException())
+
+        return authApi.refreshToken(token)
     }
     /**
      * Invalid operation for remote data source

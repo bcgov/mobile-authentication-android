@@ -6,8 +6,7 @@ import android.content.Intent
 import android.preference.PreferenceManager
 import ca.bc.gov.mobileauthentication.common.Constants
 import ca.bc.gov.mobileauthentication.common.exceptions.TokenNotFoundException
-import ca.bc.gov.mobileauthentication.common.utils.UrlUtils
-import ca.bc.gov.mobileauthentication.data.AuthApi
+import ca.bc.gov.mobileauthentication.data.AppAuthApi
 import ca.bc.gov.mobileauthentication.data.models.Token
 import ca.bc.gov.mobileauthentication.data.repos.token.TokenRepo
 import ca.bc.gov.mobileauthentication.di.Injection
@@ -52,10 +51,10 @@ class MobileAuthenticationClient(
 
     private val gson: Gson = Injection.provideGson()
     private val grantType: String = Constants.GRANT_TYPE_AUTH_CODE
-    private val authApi: AuthApi = InjectionUtils.getAuthApi(UrlUtils.cleanBaseUrl(baseUrl))
+    private val appauthApi: AppAuthApi = AppAuthApi(context, baseUrl, realmName, authEndpoint, redirectUri, clientId, hint)
     private val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context.applicationContext)
     private val tokenRepo: TokenRepo = InjectionUtils.getTokenRepo(
-            authApi, realmName, grantType, redirectUri, clientId, sharedPrefs)
+            appauthApi, realmName, grantType, redirectUri, clientId, sharedPrefs)
 
     private var passedRequestCode: Int = DEFAULT_REQUEST_CODE
 
@@ -104,7 +103,7 @@ class MobileAuthenticationClient(
      * If a token does not exist a @see ca.bc.gov.mobileauthentication.common.exceptions.TokenNotFoundException will be thrown
      */
     override fun getToken(tokenCallback: TokenCallback) {
-        tokenRepo.getToken()
+        tokenRepo.getToken(null)
                 .firstElement()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribeBy(
@@ -123,7 +122,7 @@ class MobileAuthenticationClient(
     /**
      * Gets Token from local storage as a RxJava2 Observable
      */
-    override fun getTokenAsObservable(): Observable<Token> = tokenRepo.getToken()
+    override fun getTokenAsObservable(): Observable<Token> = tokenRepo.getToken(null)
 
     /**
      * Refreshes token
@@ -148,7 +147,7 @@ class MobileAuthenticationClient(
     /**
      * Refreshes Token that is stored in local storage as a RxJava2 Observable
      */
-    override fun refreshTokenAsObservable(): Observable<Token> = tokenRepo.getToken()
+    override fun refreshTokenAsObservable(): Observable<Token> = tokenRepo.getToken(null)
             .flatMap { token -> tokenRepo.refreshToken(token) }
 
     /**

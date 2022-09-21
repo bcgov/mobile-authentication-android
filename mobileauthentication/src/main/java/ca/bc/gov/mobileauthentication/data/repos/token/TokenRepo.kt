@@ -3,6 +3,7 @@ package ca.bc.gov.mobileauthentication.data.repos.token
 import ca.bc.gov.mobileauthentication.common.exceptions.RefreshExpiredException
 import ca.bc.gov.mobileauthentication.data.models.Token
 import io.reactivex.Observable
+import net.openid.appauth.AuthorizationResponse
 
 /**
  *
@@ -52,12 +53,12 @@ private constructor(
      * If token from local db refresh is expired then @see ca.bc.gov.mobileauthentication.common.exceptions.RefreshExpiredException will be thrown.
      * If refresh token is not expired and token is expired then token will be refreshed and returned
      */
-    override fun getToken(code: String?): Observable<Token> {
-        return if (code != null) {
-            remoteDataSource.getToken(code)
+    override fun getToken(authResponse: AuthorizationResponse?): Observable<Token> {
+        return if (authResponse != null) {
+            remoteDataSource.getToken(authResponse)
                     .flatMap { localDataSource.saveToken(it) }
         } else {
-            localDataSource.getToken()
+            localDataSource.getToken(null)
                     .flatMap {
                             when {
                                 it.isRefreshExpired() -> Observable.error(RefreshExpiredException())

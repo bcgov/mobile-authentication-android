@@ -4,6 +4,7 @@ import ca.bc.gov.mobileauthentication.common.exceptions.InvalidOperationExceptio
 import ca.bc.gov.mobileauthentication.data.models.Token
 import com.google.gson.Gson
 import io.reactivex.Observable
+import net.openid.appauth.AuthorizationResponse
 
 /**
  *
@@ -45,7 +46,7 @@ private constructor(
     /**
      * Gets token from local db and returns
      */
-    override fun getToken(code: String?): Observable<Token> {
+    override fun getToken(authResponse: AuthorizationResponse?): Observable<Token> {
         return Observable.create { emitter ->
             val tokenJson = secureSharedPrefs.getString(TOKEN_KEY)
             if (tokenJson.isNotBlank()) {
