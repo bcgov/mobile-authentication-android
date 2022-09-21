@@ -16,7 +16,17 @@ android {
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
         manifestPlaceholders = [
-                'appAuthRedirectScheme': 'secure-image://client'
+                /*
+                    Instead of an <intent-filter> in AndroidManifest.xml the redirectUri scheme is
+                    defined here. Only give the scheme itself:
+
+                        'appAuthRedirectScheme': 'custom-scheme' <- happiness
+
+                    Adding any more isn't valid:
+
+                        'appAuthRedirectScheme': 'custom-scheme://somePath'  <- runtime issues
+                 */
+                'appAuthRedirectScheme': 'secure-image'
         ]
     }
     buildTypes {
