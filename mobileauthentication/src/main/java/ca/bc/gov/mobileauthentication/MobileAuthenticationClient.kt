@@ -63,6 +63,7 @@ class MobileAuthenticationClient(
      */
     override fun authenticate(requestCode: Int) {
         this.passedRequestCode = requestCode
+
         Intent(context, RedirectActivity::class.java)
                 .putExtra(RedirectActivity.BASE_URL, baseUrl)
                 .putExtra(RedirectActivity.REALM_NAME, realmName)
@@ -77,21 +78,34 @@ class MobileAuthenticationClient(
      * Handles on activity result and determines if the authentication was successful
      * or an error occurred.
      */
-    override fun handleAuthResult(
-            requestCode: Int, resultCode: Int, data: Intent?,
-            tokenCallback: TokenCallback) {
+    override fun handleAuthResult(requestCode: Int, resultCode: Int, data: Intent?,
+                                  tokenCallback: TokenCallback) {
+        if (requestCode != passedRequestCode)
+            return
 
-        if (resultCode == Activity.RESULT_OK && requestCode == passedRequestCode && data != null) {
-            val success = data.getBooleanExtra(MobileAuthenticationClient.SUCCESS, false)
-            if (success) {
-                val tokenJson = data.getStringExtra(MobileAuthenticationClient.TOKEN_JSON)
-                val token: Token = gson.fromJson(tokenJson, Token::class.java)
-                tokenCallback.onSuccess(token)
-            }
-            else {
-                val errorMessage = data.getStringExtra(MobileAuthenticationClient.ERROR_MESSAGE)
-                tokenCallback.onError(Throwable(errorMessage))
-            }
+        if (resultCode != Activity.RESULT_OK) {
+            val message = data?.getStringExtra(ERROR_MESSAGE) ?: "Unknown authentication error"
+            tokenCallback.onError(Throwable(message))
+            return
+        }
+
+        if (data == null) {
+            tokenCallback.onError(Throwable("Result OK but authentication response is malformed"))
+            return
+        }
+
+        handleConsumerResult(data, tokenCallback)
+    }
+
+    private fun handleConsumerResult(data: Intent, tokenCallback: TokenCallback) {
+        val success = data.getBooleanExtra(SUCCESS, false)
+        if (success) {
+            val tokenJson = data.getStringExtra(TOKEN_JSON)
+            val token: Token = gson.fromJson(tokenJson, Token::class.java)
+            tokenCallback.onSuccess(token)
+        } else {
+            val errorMessage = data.getStringExtra(ERROR_MESSAGE)
+            tokenCallback.onError(Throwable(errorMessage))
         }
     }
 
