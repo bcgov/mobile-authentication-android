@@ -56,25 +56,29 @@ class AppAuthApi(private val context: Context,
     }
 
     private fun convertToToken(tokenResponse: TokenResponse): Token {
-        val accessExpirationTime = tokenResponse.accessTokenExpirationTime
-        val accessExpirationUnixTime = accessExpirationTime?.div(1000)
-        val accessExpiresInMillis = accessExpirationUnixTime?.minus(System.currentTimeMillis())
+        val current = System.currentTimeMillis()
+        val currentUnixTime = current / 1000
 
-        val refreshExpiresIn = tokenResponse.additionalParameters[REFRESH_EXPIRES_IN]?.toLong()
-        val refreshExpiresInMillis = refreshExpiresIn?.times(1000)
-        val refreshExpirationUnixTime = refreshExpiresInMillis?.plus(System.currentTimeMillis())
+        val accessExpirationUnixTimeMillis = tokenResponse.accessTokenExpirationTime
+        val accessExpirationUnixTime = accessExpirationUnixTimeMillis?.div(1000)
+        val accessExpiresInSeconds = accessExpirationUnixTime?.minus(currentUnixTime)
+        val accessExpiresInMillis = accessExpiresInSeconds?.times(1000)
+
+        val refreshExpiresInSeconds = tokenResponse.additionalParameters[REFRESH_EXPIRES_IN]?.toLong()
+        val refreshExpirationUnixTime = refreshExpiresInSeconds?.plus(currentUnixTime)
+        val refreshExpirationUnixTimeMillis = refreshExpirationUnixTime?.times(1000)
 
         return Token(
                 tokenResponse.accessToken,
                 accessExpiresInMillis,
-                refreshExpiresIn,
+                refreshExpiresInSeconds,
                 tokenResponse.refreshToken,
                 tokenResponse.tokenType,
                 tokenResponse.idToken,
                 tokenResponse.additionalParameters[NOT_BEFORE_POLICY]?.toLong(),
                 tokenResponse.additionalParameters[SESSION_STATE],
-                accessExpirationUnixTime,
-                refreshExpirationUnixTime
+                accessExpirationUnixTimeMillis,
+                refreshExpirationUnixTimeMillis
         )
     }
 
