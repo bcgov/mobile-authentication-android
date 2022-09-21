@@ -4,8 +4,9 @@
 
         <activity
             android:name="ca.bc.gov.mobileauthentication.screens.redirect.RedirectActivity"
-            android:theme="@style/AppTheme" />
-
+            android:theme="@style/AppTheme"
+            android:launchMode="singleInstance" />
+        
     </application>
 
 </manifest>
