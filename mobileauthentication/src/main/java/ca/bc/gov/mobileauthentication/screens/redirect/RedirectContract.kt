@@ -1,5 +1,6 @@
 package ca.bc.gov.mobileauthentication.screens.redirect
 
+import android.content.Intent
 import ca.bc.gov.mobileauthentication.common.BasePresenter
 import ca.bc.gov.mobileauthentication.common.BaseView
 
@@ -43,7 +44,7 @@ interface RedirectContract {
     interface Presenter: BasePresenter {
         fun loginClicked()
 
-        fun redirectReceived(redirectUrl: String)
+        fun redirectReceived(redirectIntent: Intent?)
     }
 
 }

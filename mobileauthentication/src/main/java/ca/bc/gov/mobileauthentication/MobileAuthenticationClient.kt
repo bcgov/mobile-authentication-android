@@ -203,6 +203,7 @@ class MobileAuthenticationClient(
 
     companion object {
         const val DEFAULT_REQUEST_CODE = 1012
+        const val APPAUTH_REQUEST_CODE = 2024
         const val SUCCESS = "SUCCESS"
         const val ERROR_MESSAGE = "ERROR_MESSAGE"
         const val TOKEN_JSON = "TOKEN_JSON"

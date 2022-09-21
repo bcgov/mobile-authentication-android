@@ -3,6 +3,7 @@ package ca.bc.gov.mobileauthentication.di
 import android.content.SharedPreferences
 import ca.bc.gov.mobileauthentication.data.AuthApi
 import ca.bc.gov.mobileauthentication.common.Constants
+import ca.bc.gov.mobileauthentication.data.AppAuthApi
 import ca.bc.gov.mobileauthentication.data.repos.token.SecureSharedPrefs
 import ca.bc.gov.mobileauthentication.data.repos.token.TokenLocalDataSource
 import ca.bc.gov.mobileauthentication.data.repos.token.TokenRemoteDataSource
@@ -57,7 +58,7 @@ object InjectionUtils {
      * Gets Token Repo with standard params
      */
     fun getTokenRepo(
-            authApi: AuthApi,
+            authApi: AppAuthApi,
             realmName: String,
             grantType: String,
             redirectUri: String,
@@ -70,5 +71,4 @@ object InjectionUtils {
             TokenRemoteDataSource.getInstance(authApi, realmName, grantType, redirectUri, clientId),
             TokenLocalDataSource.getInstance(gson, secureSharedPrefs)
     )
-
 }

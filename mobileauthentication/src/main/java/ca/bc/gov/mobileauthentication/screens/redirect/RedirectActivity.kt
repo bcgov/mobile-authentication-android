@@ -2,7 +2,6 @@ package ca.bc.gov.mobileauthentication.screens.redirect
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.widget.Toast
@@ -12,9 +11,10 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatActivity
 import android.view.View
+import androidx.browser.customtabs.CustomTabColorSchemeParams
 import ca.bc.gov.mobileauthentication.MobileAuthenticationClient
 import ca.bc.gov.mobileauthentication.common.Constants
-import ca.bc.gov.mobileauthentication.common.utils.UrlUtils
+import ca.bc.gov.mobileauthentication.data.AppAuthApi
 import ca.bc.gov.mobileauthentication.di.Injection
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -40,6 +40,8 @@ class RedirectActivity : AppCompatActivity(), RedirectContract.View {
     override var presenter: RedirectContract.Presenter? = null
 
     override var loading: Boolean = false
+
+    private lateinit var appauthApi: AppAuthApi
 
     companion object {
         const val BASE_URL = "BASE_URL"
@@ -97,10 +99,10 @@ class RedirectActivity : AppCompatActivity(), RedirectContract.View {
         val grantType = Constants.GRANT_TYPE_AUTH_CODE
         val responseType = Constants.RESPONSE_TYPE_CODE
 
-        val authApi = InjectionUtils.getAuthApi(UrlUtils.cleanBaseUrl(baseUrl))
+        appauthApi = AppAuthApi(this, baseUrl, realmName, authEndpoint, redirectUri, clientId, hint)
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
         val tokenRepo = InjectionUtils.getTokenRepo(
-                authApi, realmName, grantType, redirectUri, clientId, sharedPreferences)
+                appauthApi, realmName, grantType, redirectUri, clientId, sharedPreferences)
 
         val gson = Injection.provideGson()
 
@@ -128,10 +130,15 @@ class RedirectActivity : AppCompatActivity(), RedirectContract.View {
         checkIntentForRedirect(intent)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == MobileAuthenticationClient.APPAUTH_REQUEST_CODE)
+            checkIntentForRedirect(data)
+    }
+
     private fun checkIntentForRedirect(intent: Intent?) {
-        if (intent != null && intent.action == Intent.ACTION_VIEW && intent.data != null) {
-            presenter?.redirectReceived(intent.data.toString())
-        }
+        presenter?.redirectReceived(intent)
     }
 
     // Loading
@@ -162,12 +169,18 @@ class RedirectActivity : AppCompatActivity(), RedirectContract.View {
      * Goes to Chrome custom tab
      */
     override fun loadWithChrome(url: String) {
-        CustomTabsIntent.Builder()
-                .addDefaultShareMenuItem()
+        val colorScheme = CustomTabColorSchemeParams.Builder()
                 .setToolbarColor(ContextCompat.getColor(this, R.color.colorPrimary))
+                .build()
+
+        val customTabsIntent = CustomTabsIntent.Builder()
+                .setShareState(CustomTabsIntent.SHARE_STATE_OFF)
+                .setDefaultColorSchemeParams(colorScheme)
                 .setShowTitle(true)
                 .build()
-                .launchUrl(this, Uri.parse(url))
+
+        val authIntent = appauthApi.getAuthRequestIntent(customTabsIntent)
+        startActivityForResult(authIntent, MobileAuthenticationClient.APPAUTH_REQUEST_CODE)
     }
 
     // Results
