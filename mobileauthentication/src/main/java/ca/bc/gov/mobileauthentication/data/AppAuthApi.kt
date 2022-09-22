@@ -7,6 +7,7 @@ import androidx.browser.customtabs.CustomTabsIntent
 import ca.bc.gov.mobileauthentication.common.utils.UrlUtils
 import ca.bc.gov.mobileauthentication.data.models.Token
 import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 import net.openid.appauth.*
 
 
@@ -103,7 +104,7 @@ class AppAuthApi(private val context: Context,
                 else if (ex != null)
                     it.onError(ex)
             }
-        }
+        }.subscribeOn(Schedulers.io())
     }
 
     /**
