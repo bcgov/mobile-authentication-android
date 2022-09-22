@@ -195,4 +195,9 @@ class RedirectActivity : AppCompatActivity(), RedirectContract.View {
         data.putExtra(MobileAuthenticationClient.TOKEN_JSON, tokenJson)
         setResult(Activity.RESULT_OK, data)
     }
+
+    override fun onBackPressed() {
+        setResultError("Login cancelled by user")
+        super.onBackPressed()
+    }
 }
